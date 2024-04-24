@@ -1,0 +1,18 @@
+﻿<TextBox x:Class="SearchApp.WaterMarkedTextBox"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:SearchApp"
+             mc:Ignorable="d" >
+    <TextBox.Template>
+        <ControlTemplate TargetType="TextBox">
+            <Grid>
+                <TextBox Text="{Binding Text, RelativeSource={RelativeSource TemplatedParent},Mode=TwoWay}" />
+                <TextBlock 
+                Text="{Binding WaterMark, RelativeSource={RelativeSource TemplatedParent}}"
+                Foreground="Gray" Margin="5,0,0,0" HorizontalAlignment="Left" VerticalAlignment="Center" Visibility="Collapsed" IsHitTestVisible="False"/>
+            </Grid>
+        </ControlTemplate>
+    </TextBox.Template>
+</TextBox>
