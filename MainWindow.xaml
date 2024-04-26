@@ -3,7 +3,8 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        xmlns:local="clr-namespace:SearchApp"
+        xmlns:local="clr-namespace:SearchApp.Models"
+        xmlns:wmtb="clr-namespace:SearchApp"
         mc:Ignorable="d"
         Title="MainWindow" Height="450" Width="800">
     <Grid>
@@ -11,36 +12,55 @@
             <RowDefinition Height="auto"/>
             <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
+        
         <StackPanel Orientation="Vertical" Grid.Row="0">
             <Grid>
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="*"/>
                     <ColumnDefinition Width="*"/>
                 </Grid.ColumnDefinitions>
-                <local:WaterMarkedTextBox Grid.Column="0" Margin="5" WaterMark="Стартовая директория"></local:WaterMarkedTextBox>
-                <local:WaterMarkedTextBox Grid.Column="1" Margin="5" WaterMark="Шаблон имени файла"></local:WaterMarkedTextBox>
+                <wmtb:WaterMarkedTextBox Text="{Binding Model.StartDir}" Grid.Column="0" Margin="5" WaterMark="Стартовая директория"></wmtb:WaterMarkedTextBox>
+                <wmtb:WaterMarkedTextBox Text="{Binding Model.TemplateName}" Grid.Column="1" Margin="5" WaterMark="Шаблон имени файла"></wmtb:WaterMarkedTextBox>
             </Grid>
+            
             <Grid>
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="*"/>
-                    <ColumnDefinition Width="*"/>
-                    <ColumnDefinition Width="*"/>
-                    <ColumnDefinition Width="*"/>
-                    <ColumnDefinition Width="*"/>
-                    <ColumnDefinition Width="*"/>
-                </Grid.ColumnDefinitions>
-                <Label Grid.Column="0" Margin="5"></Label>
-                <Label Grid.Column="1" Margin="5"></Label>
-                <Label Grid.Column="2" Margin="5"></Label>
-                <ProgressBar Grid.Column="3" Margin="5"></ProgressBar>
-                <Button Grid.Column="4" Margin="5">Поиск</Button>
-                <Button Grid.Column="5" Margin="5">Пауза\Продолжить</Button>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="auto"/>
+                    <RowDefinition Height="*"/>
+                </Grid.RowDefinitions>
+                
+                <Grid Grid.Row="0">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="*"/>
+                    </Grid.ColumnDefinitions>
+                    
+                    <Label Grid.Column="0" Margin="5" Content="{Binding Model.FilesFindCount}"></Label>
+                    <Label Grid.Column="1" Margin="5" Content="{Binding Model.AllFilesCount}"></Label>
+                    <Label Grid.Column="2" Margin="5" Content="{Binding Model.TimePassed}"></Label>
+                    <ProgressBar Grid.Column="3" IsIndeterminate="{Binding Model.ProgressBarIsIndeterminate}" Margin="5"></ProgressBar>
+                    <Button Grid.Column="4" Margin="5" IsEnabled="{Binding Model.SearchButtonIsEnable}" Command="{Binding Search}">Поиск</Button>
+                    <Button Grid.Column="5" Margin="5" Command="{Binding Pause}">Пауза\Продолжить</Button>
+                </Grid>
+
+                <StackPanel Grid.Row="1" Orientation="Horizontal">
+                    <Label>Директория</Label>
+                    <Label Content="{Binding Model.CurDir}"></Label>
+                </StackPanel>
             </Grid>
         </StackPanel>
         
         <ScrollViewer Grid.Row="1" HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Auto">
-            <TreeView>
-                <TreeViewItem>asd</TreeViewItem>
+            <TreeView ItemsSource="{Binding Model.RootDirectories}">
+                <TreeView.ItemTemplate>
+                    <HierarchicalDataTemplate ItemsSource="{Binding Subdirectories}">
+                        <TextBlock Text="{Binding Name}"/>
+                    </HierarchicalDataTemplate>
+                </TreeView.ItemTemplate>
             </TreeView>
         </ScrollViewer>
     </Grid>
